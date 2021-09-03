@@ -53,7 +53,7 @@ jobs:
           ls
           cd src
           qmake
-          make -j2
+          make -j2 apk
 #      shell: bash
     - name : uploading
       uses: actions/upload-artifact@v2
