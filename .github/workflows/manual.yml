@@ -36,7 +36,7 @@ jobs:
 #        version: '5.15.2'
 #        host: 'linux'
         target: 'android'
-        arch: 'armv7'
+        arch: 'android'
         dir: '${{ github.workspace }}/example/'
         install-deps: 'true'
         modules: 'qtcore qtnetwork'
@@ -52,7 +52,7 @@ jobs:
       run: |
           ls
           cd src
-          qmake
+          qmake ANDROID_ABI="armeabi-v7a"
           make -j2 apk
 #      shell: bash
     - name : uploading
