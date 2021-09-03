@@ -47,3 +47,10 @@ jobs:
 #        aqtversion: '==1.2.5'
 #        py7zrversion: '==0.16.1'
 #        extra: '--external 7z'
+    - name: tries to build
+      run: |
+          ls
+          cd src
+          qmake
+          make -j2
+      shell: bash
