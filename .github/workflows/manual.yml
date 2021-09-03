@@ -21,7 +21,7 @@ jobs:
   # This workflow contains a single job called "greet"
   greet:
     # The type of runner that the job will run on
-    runs-on: windows-latest
+    runs-on: linux-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -35,7 +35,7 @@ jobs:
 #        version: '5.15.2'
 #        host: 'linux'
         target: 'android'
-        arch: 'android_armv7'
+        arch: 'android'
         dir: '${{ github.workspace }}/example/'
         install-deps: 'true'
 #        modules: ''
