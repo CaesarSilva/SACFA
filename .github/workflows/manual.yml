@@ -55,3 +55,8 @@ jobs:
           qmake
           make -j2
 #      shell: bash
+    - name : uploading
+      uses: actions/upload-artifact@v2
+      with:
+        name : Minimal test linux
+        path : ${{runner.workspace}}/src
