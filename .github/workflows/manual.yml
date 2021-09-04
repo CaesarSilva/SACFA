@@ -35,7 +35,7 @@ jobs:
       with:
         version: '6.1.2'
 #        host: 'linux'
-        target: 'android'
+        target: 'android_armv7'
         arch: 'android_armv7'
         dir: '${{ github.workspace }}/example/'
         install-deps: 'true'
