@@ -62,6 +62,10 @@ if(file.open(QIODevice::WriteOnly| QIODevice::Text)){
         i++;
     }
     stream << "[info]\nNumTabs="<<i;
+    stream << "\nscreenX="<<sX;
+    stream << "\nscreenY="<<sY;
+    stream << "\navailableX="<<asX;
+    stream << "\navailableY="<<asY;
 
     file.close();
 }

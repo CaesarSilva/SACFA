@@ -22,6 +22,8 @@ protected:
     void LoadTabs();
     void SaveTabs();
 public:
+    int sY,sX;
+    int asY, asX;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 /*typedef*/ int (*EvtCallBackP)(std::string ev);
