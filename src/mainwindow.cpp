@@ -4,6 +4,13 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+
+      /*QRect rect = QApplication::primaryScreen()->geometry();
+      sY =  QApplication::primaryScreen()->geometry().size().height();
+      sX =  QApplication::primaryScreen()->geometry().size().width();
+      asX = QApplication::primaryScreen()->availableSize().width();
+      asY = QApplication::primaryScreen()->availableSize().height();*/
+
     //ui->setupUi(this);
     // Create the button, make "this" the parent
       m_button = new QPushButton("My Button", this);
@@ -66,6 +73,7 @@ if(file.open(QIODevice::WriteOnly| QIODevice::Text)){
     stream << "\nscreenY="<<sY;
     stream << "\navailableX="<<asX;
     stream << "\navailableY="<<asY;
+    stream << "\nqtversion=" << QT_VERSION_STR ;
 
     file.close();
 }
