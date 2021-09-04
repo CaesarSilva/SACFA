@@ -45,7 +45,7 @@ jobs:
 #        tools: 'tools_ifw,4.0.0,qt.tools.ifw.40 tools_qtcreator,4.13.2-0,qt.tools.qtcreator'
 #        set-env: 'false'
 #        tools-only: 'false'
-        aqtversion: '==1.2.5'
+        aqtversion: '==2.2.5'
 #        py7zrversion: '==0.16.1'
 #        extra: '--external 7z'
     - name: tries to build
