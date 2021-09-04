@@ -63,7 +63,7 @@ jobs:
       run: |
           ls
           cd src
-          cd /home/runner/work/SACFA/SACFA/example//Qt/6.1.2/
+#          cd /home/runner/work/SACFA/SACFA/example//Qt/6.1.2/
           ls
           qmake ANDROID_ABI="armeabi-v7a"
           make -j2 apk
