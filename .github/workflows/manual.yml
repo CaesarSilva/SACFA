@@ -33,10 +33,10 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
-#        version: '5.15.2'
+        version: '6.1.2'
 #        host: 'linux'
         target: 'android'
-        arch: 'android'
+        arch: 'android_armv7'
         dir: '${{ github.workspace }}/example/'
         install-deps: 'true'
         modules: 'qtcore qtnetwork'
