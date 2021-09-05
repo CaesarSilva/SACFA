@@ -7,9 +7,22 @@
 #include <QTextEdit>
 #include <QList>
 #include <QStandardPaths>//TODO: Remove it after tests
+#include <QScrollBar>//idk if thats necessary
+#include <QMdiSubWindow>
+#include <vector>
 #include "mylineedit.h"
 #include "serverconnection.h"
+#include "playerssubwindow.h"
+#include "shared.h"
+/*struct PlayerData{
+    std::string name;
+    unsigned char team;
+    short kills;
+    short deaths;
+    unsigned char id;
+    std::string ip;
 
+}*/
 class ServerTab : public QWidget
 {
     Q_OBJECT
@@ -19,10 +32,14 @@ public:
     MyLineEdit * TE_host ;
     MyLineEdit * TE_port ;
     MyLineEdit * TE_pass ;
+    MyLineEdit * TE_input ;
+
 private:
 
     ServerConnection * SvConnection ;
     QPushButton *m_button;
+    QPushButton *bt_plwin;
+    QPushButton *bt_sendtext;
    // QPlainTextEdit * TE_host ;
 
     QTextEdit * TE_output;
@@ -30,8 +47,13 @@ private:
     //callbackstuff below
     //bool  CallBackSet = false;
    // void ** CbThiss;
+    PlayersSubWindow * PSWin;
  public:
+    void handleNewLine(std::string line);
     void handleConnectButton();
+    void handlePlnwinBT();
+    void handleSendTextBT();
+    void handleRefreshX(std::vector<PlayerData> pd, GameData gd);
  //   int EvtCallBack(std::string ev);
  //   int CallCallBack(std::string ev, std::string data = "");
     /*typedef*/ //int (*EvtCallBackP)(std::string ev, void*);

@@ -11,6 +11,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     mylineedit.cpp \
+    playerline.cpp \
+    playerssubwindow.cpp \
     serverconnection.cpp \
     servertab.cpp \
     servertabs.cpp
@@ -18,9 +20,12 @@ SOURCES += \
 HEADERS += \
     mainwindow.h \
     mylineedit.h \
+    playerline.h \
+    playerssubwindow.h \
     serverconnection.h \
     servertab.h \
-    servertabs.h
+    servertabs.h \
+    shared.h
 
 FORMS += \
     mainwindow.ui

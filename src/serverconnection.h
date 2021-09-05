@@ -11,6 +11,27 @@
 #include <QStandardPaths>
 #include <sstream>
 #include <iostream>
+#include <vector>
+#include "shared.h"
+
+/*struct GameData{
+    std::string time;
+    std::string mapname;
+    std::string nextmap;
+    //std::
+
+};
+
+struct PlayerData{
+    std::string name;
+    unsigned char team;
+    short kills;
+    short deaths;
+    unsigned char id;
+    std::string ip;
+    std::string hwid;
+
+}*/
 //#include <cmath>
 class ServerConnection : public QObject
 {
@@ -19,6 +40,11 @@ public:
     int Connect(std::string SvHost, int vPort, std::string SvPass);
     explicit ServerConnection(QObject *parent = nullptr);
     int count = 0;
+    int (*LineReadCallBack)(std::string line, void* tthis);
+    int (*RefreshxCallBack)( std::vector<PlayerData> plvector, GameData gd , void* tthis);
+    void * CbThiss;
+    void SendText(std::string text);
+
 private:
     QByteArray * Refr;
     bool stillreadingref = false;

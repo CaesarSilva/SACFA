@@ -2,6 +2,7 @@
 
 ServerConnection::ServerConnection(QObject *parent) : QObject(parent)
 {
+    //CbThiss = &parent;
     Socket = new QTcpSocket(this);
     connect(Socket,&QTcpSocket::readyRead,this,&ServerConnection::rready);
     file = new QFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"/log.txt");
@@ -32,7 +33,8 @@ int ServerConnection::Connect(std::string SvHost, int vPort, std::string SvPass)
 
 }
 void ServerConnection::rready(){
-
+    unsigned int count = 0;
+    bool refreshfound=false;
     QByteArray block = Socket->readAll();
     std::string stdstrin = block.toStdString();
     std::istringstream f(stdstrin);
@@ -41,7 +43,7 @@ void ServerConnection::rready(){
     file2.open(QIODevice::WriteOnly| QIODevice::Append |QIODevice::Text);
 
     QTextStream stream2(&file2);
-    stream2 << stdstrin.substr(0,20).c_str() <<"|||" << block.length() << "<...>";
+    stream2 << stdstrin.substr(0,200).c_str() <<"|||" << block.length() << "<...>";
     //file2.close();
     std::string s;
     if(stillreadingref){
@@ -59,7 +61,10 @@ void ServerConnection::rready(){
     }
 
     }else
-        while (getline(f, s, '\n')) {
+        while (getline(f, s, '\n') && !refreshfound) {
+            stream2 << "\n<count>" << count << s.c_str() ;
+            count += s.length()+1;//+1 includes the \n in the counting
+            stream2 << "</count>" << count << "  ";
         //s.substr(0,12) == std::string("/clientlists")
             //stream2 << s.substr(0,11).c_str() << "<|||>";
             if(s.substr(0,11) == std::string("/clientlist")){
@@ -75,10 +80,25 @@ void ServerConnection::rready(){
                 //command = "std::string("")+"["+(const char)170+"] Hardcoded User: SACFA\n"" ;
                 Socket->write(command.c_str());
 
-            }
+            }else if(s.substr(0,8) == std::string("REFRESHX")){
+                refreshfound = true;
+               }
+            else {
+                  LineReadCallBack(s,CbThiss); //&CbThiss caused segmentation fault
+                           }
+
 
 
         }
+    if(refreshfound){//one alternative to this is to use the string stream
+      QByteArray block2 = block.right(block.length()-count+10);
+      stream2 << "\n REFRESH found in the way. \n Length" << block2.length() << "\n First 10 char:" << block2.toStdString().substr(0,12).c_str();
+      stillreadingref = true;
+      Refr = new QByteArray(block2);
+    }
+
+
+
 file2.close();
         //
 /*
@@ -87,6 +107,10 @@ file2.close();
         stream->flush();
         count++;
     }else file->close();*/
+
+}
+void ServerConnection::SendText(std::string text){
+    Socket->write((text+"\n").c_str());
 
 }
 void ServerConnection::parseRefreshX(){
@@ -104,11 +128,17 @@ Rstream.readRawData(refreshxrn,10);
 //char  playern[24] ;
 //stream2 <<Rstream.readRawData(playern,24);
 stream2 << "\n\n\n\n" <<Qar.length() << "  " << Refr->length() << "  " << removeitlater <<"<REFRESHX>" << refreshxrn;
+std::vector<PlayerData> pvec;
+GameData gdata;
 for(int i = 0; i<32;i++){
+    PlayerData Pstruct;
+
     Rstream.skipRawData(1);
     char  playern[24] ;
     stream2 <<Rstream.readRawData(playern,24);
+    Pstruct.name= playern;
     stream2 << "\n<PLAYER" << i << ">" << playern;
+    pvec.push_back(Pstruct);
 }
 for(int i = 0; i<32;i++){//HWID
     char  hwids[12] ;
@@ -215,5 +245,5 @@ file2.close();
 
 
 
-
+RefreshxCallBack(pvec,gdata, CbThiss);
 }
