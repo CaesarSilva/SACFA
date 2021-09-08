@@ -64,7 +64,7 @@ connect(TE_input, &MyLineEdit::FocusOUT, this, [=](){TE_output->append("PaFOUT")
 
 
     PSWin = new PlayersSubWindow(this);
-    PSWin->setGeometry(0,0,200,200);
+    PSWin->setGeometry(0,20,300,400);
     PSWin->hide();
 
     QFont font = TE_output->font();

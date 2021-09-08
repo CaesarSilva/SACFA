@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
       connect(m_button2, &QPushButton::pressed, this, &MainWindow::handleDeleteButton);
       //svtabs
       SvTabs = new ServerTabs(this);
-      SvTabs->setGeometry(10,100,300,600);
+      SvTabs->setGeometry(10,100,330,600);
       connect(SvTabs,&ServerTabs::KbHide,this, [=](){EvtCallBackP("khide");} );
       connect(SvTabs,&ServerTabs::KbShow,this, [=](){EvtCallBackP("kshow");} );
       connect(SvTabs,&ServerTabs::SvTabs,this, &MainWindow::SaveTabs);

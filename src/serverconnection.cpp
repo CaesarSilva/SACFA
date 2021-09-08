@@ -18,15 +18,12 @@ int ServerConnection::Connect(std::string SvHost, int vPort, std::string SvPass)
 
     //QString str = QString::fromStdString(SvPass+"\n");
     std::string pswd = SvPass+"\n";
-                //QByteArray block;
-                //QDataStream out(&block, QIODevice::WriteOnly);
-                //Socket->write("aaa\n");
+
                 Socket->write(pswd.c_str());
     std::string command = "/maxplayers\n/clientlist\nREFRESHX\n";
-                Socket->write(command.c_str());
-                //char c170 = 170;
-                //command = std::string("")+"["+(const char)170+"] Hardcoded User: SACFA\n" ;
                 //Socket->write(command.c_str());
+
+
 
 
     return 1;

@@ -6,7 +6,7 @@
 #include <QMenu>
 #include <playerline.h>
 #include "shared.h"
-
+#include <QVector>
 //these 2 structures bellow were also defined in serverconnection.h
 /*struct GameData{
     std::string time;
@@ -33,7 +33,7 @@ public:
     PlayersSubWindow(QWidget *parent = nullptr);
     void handleRefreshX(std::vector<PlayerData> pd, GameData gd);
     QMenu * menu;
-
+    QVector<playerLine*> * PlLnVec;
 private:
     void OnHideBt();
     QPushButton * Bt_Hide;
