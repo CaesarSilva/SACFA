@@ -1,4 +1,9 @@
 #include "servertab.h"
+int SendTextCallBack(void* tthis, std::string command){
+    //((ServerTabs*)thiss)->EvtCallBack(ev);
+    ((ServerTab*)tthis)->TE_input->setText(QString::fromStdString(command));
+return 1;
+}
 int LReadCb(std::string line, void* tthis){
     //((ServerTabs*)thiss)->EvtCallBack(ev);
     ((ServerTab*)tthis)->handleNewLine(line);
@@ -60,10 +65,11 @@ connect(TE_input, &MyLineEdit::FocusOUT, this, [=](){TE_output->append("PaFOUT")
     TE_pass->insert(QString::fromStdString(password));
 
 
-    //connect(Bt_connect, &QPushButton::pressed, this , [=](){TE_output->append("WTF"); handleConnectButton();});
 
 
     PSWin = new PlayersSubWindow(this);
+    PSWin->CbThiss = (void*)this;
+    PSWin->CommandTextCallBack = &SendTextCallBack;
     PSWin->setGeometry(0,20,300,400);
     PSWin->hide();
 
@@ -113,7 +119,7 @@ void ServerTab::handleConnectButton()
     emit SvTab();
 }
 void ServerTab::handlePlnwinBT(){
-    TE_output->setText("handleplnwinbtpressed");
+
     //QMdiSubWindow * test = new QMdiSubWindow(this);
 
     PSWin->show();

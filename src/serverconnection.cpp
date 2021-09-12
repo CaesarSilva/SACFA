@@ -21,7 +21,7 @@ int ServerConnection::Connect(std::string SvHost, int vPort, std::string SvPass)
 
                 Socket->write(pswd.c_str());
     std::string command = "/maxplayers\n/clientlist\nREFRESHX\n";
-                //Socket->write(command.c_str());
+                Socket->write(command.c_str());
 
 
 
@@ -35,7 +35,7 @@ void ServerConnection::rready(){
     QByteArray block = Socket->readAll();
     std::string stdstrin = block.toStdString();
     std::istringstream f(stdstrin);
-    QFile file2(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"/wtf.txt");
+    QFile file2(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"/logS.txt");
 
     file2.open(QIODevice::WriteOnly| QIODevice::Append |QIODevice::Text);
 
@@ -49,7 +49,6 @@ void ServerConnection::rready(){
         parseRefreshX();
     }else
     if(block.startsWith("REFRES") || block.startsWith("\rREFRES") ){
-    stream2<< "PANIC!!";
     if(block.length()<2002){
         stillreadingref = true;
         Refr = new QByteArray(block);
@@ -69,12 +68,8 @@ void ServerConnection::rready(){
                 std::string command;
                 command = std::string("")+"["+(const char)170+"] Hardcoded User: SACFA\n" ;
                 Socket->write(command.c_str());
-                std::cout << "wtf man" << std::endl;
-                //assert("hurra hurra");
-            }else if(s.substr(0,11) == std::string("/tlientlist")){
-             //Socket->write(block.toStdString().c_str());
+            }else if(s.substr(0,11) == std::string("/tlientlist")){//TODO: remove it afer REFRESHX is requested automatically
                 std::string command = "REFRESHX\n";
-                //command = "std::string("")+"["+(const char)170+"] Hardcoded User: SACFA\n"" ;
                 Socket->write(command.c_str());
 
             }else if(s.substr(0,8) == std::string("REFRESHX")){
@@ -146,6 +141,7 @@ for(int i = 0; i<32;i++){//TEAMS
     unsigned char  teams ;
     //stream2 <<Rstream.readRawData(teams,1);
     Rstream >> teams;
+    pvec[i].team = teams;
     stream2 << "\n<TEAM" << i << ">" << (unsigned int)(teams);
 }
 for(int i = 0; i<32;i++){//KILLS
@@ -154,6 +150,7 @@ for(int i = 0; i<32;i++){//KILLS
     Rstream >> kills[0] ;
     Rstream >> kills[1];
     stream2 << "\n<kills" << i << ">" << (unsigned int)(kills[1]*256+kills[0]) ;
+    pvec[i].kills = (short)(kills[1]*256+kills[0]);
 }
 for(int i = 0; i<32;i++){//CAPS
     unsigned char  caps ;
@@ -167,6 +164,7 @@ for(int i = 0; i<32;i++){//DEATHS
     Rstream >> deaths[0] >> deaths[1];
     stream2 << "\n<deaths" << i << ">" << (unsigned int)(deaths[1]*256+ deaths[0]);
     //stream2 << "\n<deaths detailed>" << i << ">" << (unsigned int)deaths[1] << "  " << (unsigned int)deaths[0];
+    pvec[i].deaths = (short)(deaths[1]*256+ deaths[0]);
 }
 for(int i = 0; i<32;i++){//PINGS
     signed long pings ;
@@ -180,12 +178,14 @@ for(int i = 0; i<32;i++){//IDS
     //stream2 <<Rstream.readRawData(teams,1);
     Rstream >> ids;
     stream2 << "\n<ID" << i << ">" << (ids);
+    pvec[i].id = ids;
 }
 for(int i = 0; i<32;i++){//IDS
     unsigned char  ips[4] ;
     //stream2 <<Rstream.readRawData(teams,1);
     Rstream >> ips[0] >> ips[1] >> ips[2] >> ips[3];
     stream2 << "\n<IP" << i << ">" << (unsigned int)ips[0] << "." << (unsigned int)ips[1] << "." << (unsigned int)ips[2] << "." << (unsigned int)ips[3];
+    pvec[i].ip = std::to_string((unsigned int)ips[0]) + "." + std::to_string((unsigned int)ips[1]) + "." + std::to_string((unsigned int)ips[2]) + "." + std::to_string((unsigned int)ips[3])  ;
 }
 for(int i = 0; i<32;i++){//x pos
     Rstream.skipRawData(4);

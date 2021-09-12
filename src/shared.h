@@ -17,7 +17,9 @@ struct PlayerData{
     unsigned char id;
     std::string ip;
     std::string hwid;
+    std::string command;//remove if unnecessary
 
 };
+Q_DECLARE_METATYPE(PlayerData)
 
 #endif // SHARED_H
