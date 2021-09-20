@@ -136,6 +136,7 @@ for(int i = 0; i<32;i++){//HWID
     char  hwids[12] ;
     stream2 <<Rstream.readRawData(hwids,12);
     stream2 << "\n<HWID" << i << ">" << hwids;
+    pvec[i].hwid = hwids;
 }
 for(int i = 0; i<32;i++){//TEAMS
     unsigned char  teams ;
@@ -157,6 +158,7 @@ for(int i = 0; i<32;i++){//CAPS
     //stream2 <<Rstream.readRawData(teams,1);
     Rstream >> caps;
     stream2 << "\n<CAPS" << i << ">" << (caps);
+    pvec[i].caps = caps;
 }
 for(int i = 0; i<32;i++){//DEATHS
     unsigned char deaths[2] ;
@@ -165,13 +167,18 @@ for(int i = 0; i<32;i++){//DEATHS
     stream2 << "\n<deaths" << i << ">" << (unsigned int)(deaths[1]*256+ deaths[0]);
     //stream2 << "\n<deaths detailed>" << i << ">" << (unsigned int)deaths[1] << "  " << (unsigned int)deaths[0];
     pvec[i].deaths = (short)(deaths[1]*256+ deaths[0]);
+
 }
 for(int i = 0; i<32;i++){//PINGS
     signed long pings ;
+    char  pingchar[4] ;
+    stream2 <<Rstream.readRawData(pingchar,4);
     //stream2 <<Rstream.readRawData(kills,2);
     //Rstream >> pings;
     //stream2 << "\n<ping" << i << ">" << pings;
-    Rstream.skipRawData(4);
+    memcpy(&pings,pingchar,4);
+    pvec[i].ping = pings;
+    //Rstream.skipRawData(4);
 }
 for(int i = 0; i<32;i++){//IDS
     unsigned char  ids ;

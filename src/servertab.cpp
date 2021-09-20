@@ -1,7 +1,13 @@
 #include "servertab.h"
 int SendTextCallBack(void* tthis, std::string command){
     //((ServerTabs*)thiss)->EvtCallBack(ev);
-    ((ServerTab*)tthis)->TE_input->setText(QString::fromStdString(command));
+    if(command != "REFRESHX\n" && command != "REFRESH\n"){
+       ((ServerTab*)tthis)->TE_input->setText(QString::fromStdString(command));
+    }else{
+        ((ServerTab*)tthis)->SvConnection->SendText(command);
+    }
+
+
 return 1;
 }
 int LReadCb(std::string line, void* tthis){

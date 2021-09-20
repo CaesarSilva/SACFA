@@ -12,6 +12,8 @@ struct GameData{
 struct PlayerData{
     std::string name;
     unsigned char team;
+    unsigned char caps;
+    signed long ping;
     short kills;
     short deaths;
     unsigned char id;

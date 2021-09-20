@@ -8,6 +8,8 @@
 #include "shared.h"
 #include <QVector>
 #include <QList>
+#include <QScrollArea>
+#include <QScrollBar>
 //these 2 structures bellow were also defined in serverconnection.h
 /*struct GameData{
     std::string time;
@@ -34,14 +36,18 @@ public:
     PlayersSubWindow(QWidget *parent = nullptr);
     void handleRefreshX(std::vector<PlayerData> pd, GameData gd);
     QMenu * menu;
+    QWidget * PlayersWidget = nullptr;
     QVector<playerLine*>  PlLnVec;
     void handlePlayerLineBt(PlayerData pdata);
     int (*CommandTextCallBack)(void* tthis, std::string command);
     void * CbThiss;
+    QScrollArea * PlayersScroll = nullptr;
 private:
     void HandleAction(QAction *qA);
     void OnHideBt();
+    void OnRefreshBt();
     QPushButton * Bt_Hide;
+    QPushButton * Bt_refresh;
 };
 
 #endif // PLAYERSSUBWINDOW_H

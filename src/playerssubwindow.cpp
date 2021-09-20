@@ -6,10 +6,19 @@ int BtClickCallBack(void* tthis, PlayerData pdata){
 }
 PlayersSubWindow::PlayersSubWindow(QWidget *parent):QMdiSubWindow(parent)
 {
+    PlayersScroll = new QScrollArea(this);
+    PlayersScroll->setGeometry(3,55,280,320);
+    PlayersScroll->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+    PlayersScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    PlayersScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    PlayersScroll->verticalScrollBar()->setStyleSheet("QScrollBar:vertical { width: 30px; }");
     menu = new QMenu("title",this);
     Bt_Hide = new QPushButton("hide",this);
-    Bt_Hide ->setGeometry(10,10,100,30);
+    Bt_Hide ->setGeometry(10,15,100,30);
     connect(Bt_Hide,&QPushButton::pressed,this,&PlayersSubWindow::OnHideBt);
+    Bt_refresh = new QPushButton("Refresh",this);
+    Bt_refresh ->setGeometry(150,15,100,30);
+    connect(Bt_refresh,&QPushButton::pressed,this,&PlayersSubWindow::OnRefreshBt);
 }
 void PlayersSubWindow::OnHideBt(){
 
@@ -19,21 +28,27 @@ this->hide();
 }
 void PlayersSubWindow::handleRefreshX(std::vector<PlayerData> pd, GameData gd){
   //TODO: DELETE playerLines before creating new ones
-
+    int sizecount = 60;
+    PlayersWidget = new QWidget(PlayersScroll);
+    PlayersWidget->setGeometry(0,0,300,500);
     for(int i=0;i<32;i++){
         if(pd[i].team != 255){
-            playerLine * plln= new playerLine(this,pd[i]);
+            playerLine * plln= new playerLine(PlayersWidget,pd[i]);
+            //PlayersScroll->setWidget(plln);
             plln->clickCallBack = &BtClickCallBack;
             plln->CbThiss = (void*)this;
             //playerLine * plln= new playerLine(this,pd[i].name,pd[i].team,pd[i].kills,pd[i].deaths,pd[i].ip,pd[i].id);
             plln->setGeometry(5,30+30*i,300,30);
             PlLnVec.push_back(plln);
+            sizecount += 30;
         }
 
 
 
-  }
 
+  }
+    PlayersScroll->setWidget(PlayersWidget);
+//PlayersScroll->verticalScrollBar()->setMaximum(sizecount);
     // menu->addAction(QString::fromStdString(std::to_string(pd.size())));
    /* menu->addAction(QString::fromStdString(pd[0].name));
     menu->addAction(QString::fromStdString(pd[1].name));
@@ -73,6 +88,14 @@ void PlayersSubWindow::handlePlayerLineBt(PlayerData pdata){
     connect(menu, &QMenu::triggered, this, &PlayersSubWindow::HandleAction);
 
 
+}
+void PlayersSubWindow::OnRefreshBt(){
+
+
+     Bt_refresh ->setGeometry(170,15,100,30);
+     PlLnVec.clear();
+     delete PlayersWidget;//TODO: delete only the children
+     CommandTextCallBack(CbThiss, "REFRESHX\n");
 }
 void PlayersSubWindow::HandleAction(QAction * qA){
 PlayerData pdata = qA->data().value<PlayerData>();

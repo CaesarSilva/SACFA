@@ -33,10 +33,10 @@ public:
     MyLineEdit * TE_port ;
     MyLineEdit * TE_pass ;
     MyLineEdit * TE_input ;
-
+    ServerConnection * SvConnection ;
 private:
 
-    ServerConnection * SvConnection ;
+
     QPushButton *m_button;
     QPushButton *bt_plwin;
     QPushButton *bt_sendtext;
